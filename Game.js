@@ -7,17 +7,21 @@ var Game = function( ) {
     this._resultsPanel = null;
     this._tilesPanel = null;
     this._selectedPanel = null;
+    this._currentScore = 0;
+    this._onScore = null;
 };
 
 Game.prototype.prepare = function(tiles, gamepanel, wordlist) {
-    var self = this;
     this._tilesPanel = tiles;
     this._resultsPanel = wordlist;
     this._selectedPanel = gamepanel;
 
-    this._wordBank.load('data/wordlist.txt').then(() => {        
-    });
-};  
+    return this._wordBank.load('data/wordlist.txt');
+}; 
+
+Game.prototype.onScoreUpdated = function(callback) { 
+    this._onScore = callback;
+}
 
 Game.prototype.start = function() { 
     Game.clearElement(this._resultsPanel);
@@ -33,6 +37,7 @@ Game.prototype.start = function() {
 
     this._tileSet = vowels.concat(consonants);
     this._wordSet = this._wordBank.getAvailableWords(this._tileSet );
+    this._currentScore = 0;
 
     for(var index in this._tileSet ) {
         this._tilesPanel.appendChild(this.getCharacterAsTile(this._tileSet[index], this.selectCharacter.bind(this)));
@@ -104,6 +109,8 @@ Game.prototype.submitSelected = function() {
         this._resultsPanel.appendChild(this.getWordAsTileset(selectedWord));
 
         this._wordSet.splice(wordFound,1);
+
+        this.score(selectedWord.length * 5);
     }
 
     for(var tile in selectedTiles) { 
@@ -119,6 +126,12 @@ Game.prototype.giveUp = function() {
     for(var index in this._wordSet) { 
         this._resultsPanel.appendChild(this.getWordAsTileset(this._wordSet[index]));
     }
+};
+
+Game.prototype.score = function(value) { 
+    this._currentScore += value;
+
+    this._onScore(this._currentScore);
 };
 
 Game.randomInt = (min, max) => { 
