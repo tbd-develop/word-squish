@@ -8,7 +8,10 @@ function load() {
         document.getElementById('wordlist')
     ).then(() => { 
         game.onScoreUpdated(function(score) { 
-            document.getElementById('scorecard').innerText = score;
+            document.getElementById('scorecard').innerText = score;            
+        });
+        game.onGameComplete(function() { 
+            complete();
         });
     });
 };
@@ -19,7 +22,9 @@ function submitWord() {
 
 function giveUp() { 
     game.giveUp();
+}
 
+function complete() { 
     document.getElementById('submit-word').setAttribute('disabled', 'disabled');
     document.getElementById('give-up').setAttribute('disabled', 'disabled');
     document.getElementById('new-game').removeAttribute('disabled');

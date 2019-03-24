@@ -1,55 +1,70 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>WordSquish</title>
-        <style>
-            body { 
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;                
-                background-color: #d1d1d1;
-            }
 
-            .tile { 
-                background-image: url('images/tile_sm.png');
-                width: 64px;
-                height: 68px;
-                font-size: 3.6em;
-                text-align: center;       
-                line-height: 1em;          
-                margin: 2px;
-                display: inline-block;                   
-            }
+<head>
+    <title>WordSquish</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            #scorecard { 
-                font-size: 1.4em;
-                color: #4e3;
-            }
-        </style>
-        <script type="text/javascript" src="Timer.js"></script>
-        <script type="text/javascript" src="WordBank.js"></script>
-        <script type="text/javascript" src="Game.js"></script>
-        <script type="text/javascript" src="app.js"></script>
-    </head>
-    <body>        
-        <div class="game-panel">
-            <h4>Available</h4>
-            <div id="tileset">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="app.css" />
+</head>
 
-            </div>
-            <h4>Selected</h4>
-            <div id="game">
-
-            </div>
-            <div id="scorecard">
-
-            </div>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand game-name" href="#">Word Squish</a>
+        <div class="mx-auto">
+            <span id="scorecard">0</span>
         </div>
-        <button type="button" onclick="submitWord()" id="submit-word" disabled="disabled">Submit Word</button>
-        <button type="button" onclick="giveUp()" id="give-up" disabled="disabled">Give Up!</button>
-        <button type="button" onclick="start()" id="new-game">New Tiles Please!</button>
-        <div id="gametime"></div>
-        <h2>Found Words</h2>
-        <div id="wordlist">
-
+        <div class="ml-auto">
+            <button type="button" class="btn btn-info" onclick="start()" id="new-game">New Game</button>
         </div>
-    </body>
+    </nav>
+    <div class="container-fluid">
+        <div class="row game">
+            <div class="col">
+                <div class="game-panel">
+                    <h2>Tiles</h2>
+                    <div id="tileset">
+
+                    </div>
+                    <h4>Selected</h4>
+                    <div id="game">
+
+                    </div>
+                </div>
+                <br />
+                <button type="button" class="btn btn-primary" onclick="submitWord()" id="submit-word"
+                    disabled="disabled">Submit Word</button>
+                <button type="button" class="btn btn-danger" onclick="giveUp()" id="give-up" disabled="disabled">Give
+                    Up!</button>
+                <div id="gametime"></div>
+            </div>
+            <div class="col">
+                <h2>Found Words</h2>
+                <div id="wordlist">
+
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="Timer.js"></script>
+    <script type="text/javascript" src="WordBank.js"></script>
+    <script type="text/javascript" src="Game.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</body>
+
 </html>

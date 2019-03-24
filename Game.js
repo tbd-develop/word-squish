@@ -9,6 +9,7 @@ var Game = function( ) {
     this._selectedPanel = null;
     this._currentScore = 0;
     this._onScore = null;
+    this._onComplete = null;
 };
 
 Game.prototype.prepare = function(tiles, gamepanel, wordlist) {
@@ -21,6 +22,10 @@ Game.prototype.prepare = function(tiles, gamepanel, wordlist) {
 
 Game.prototype.onScoreUpdated = function(callback) { 
     this._onScore = callback;
+};
+
+Game.prototype.onGameComplete = function(callback) { 
+    this._onComplete = callback;
 }
 
 Game.prototype.start = function() { 
@@ -38,6 +43,10 @@ Game.prototype.start = function() {
     this._tileSet = vowels.concat(consonants);
     this._wordSet = this._wordBank.getAvailableWords(this._tileSet );
     this._currentScore = 0;
+
+    if(this._wordSet.length == 0) { 
+        this.start();
+    }
 
     for(var index in this._tileSet ) {
         this._tilesPanel.appendChild(this.getCharacterAsTile(this._tileSet[index], this.selectCharacter.bind(this)));
@@ -113,6 +122,11 @@ Game.prototype.submitSelected = function() {
         this.score(selectedWord.length * 5);
     }
 
+    if( this._wordSet.length == 0) { 
+        this.score(30);
+        this.giveUp();
+    }
+
     for(var tile in selectedTiles) { 
         var element = selectedTiles[tile];
 
@@ -126,6 +140,8 @@ Game.prototype.giveUp = function() {
     for(var index in this._wordSet) { 
         this._resultsPanel.appendChild(this.getWordAsTileset(this._wordSet[index]));
     }
+
+    this._onComplete();
 };
 
 Game.prototype.score = function(value) { 

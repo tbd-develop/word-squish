@@ -1,0 +1,32 @@
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;                
+    background-color: #d1d1d1;
+}
+
+.game-name { 
+    font-size: 1.8em;
+}
+
+.tile { 
+    background-image: url('images/tile_sm.png');
+    width: 64px;
+    height: 68px;
+    font-size: 3.6em;
+    text-align: center;       
+    line-height: 1em;          
+    margin: 2px;
+    display: inline-block;                   
+}
+
+#scorecard { 
+    font-size: 1.6em;
+}
+
+#scorecard::after { 
+    content: 'pts';
+}
+
+.game { 
+    padding: 5px;
+    margin: 5px auto;
+}
