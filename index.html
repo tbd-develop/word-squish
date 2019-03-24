@@ -19,13 +19,19 @@
                 display: inline-block;                   
             }
         </style>
+        <script type="text/javascript" src="Timer.js"></script>
         <script type="text/javascript" src="WordBank.js"></script>
         <script type="text/javascript" src="Game.js"></script>
-        <script type="text/javascript">           
+        <script type="text/javascript">                       
             var game = new Game();
+            var timer = new Timer(90);
 
             function load() { 
-                game.start(document.getElementById('tileset'), document.getElementById('game'), document.getElementById('wordlist'));
+                game.prepare(
+                    document.getElementById('tileset'), 
+                    document.getElementById('game'), 
+                    document.getElementById('wordlist')
+                );
             };
 
             function submitWord() { 
@@ -34,9 +40,29 @@
 
             function giveUp() { 
                 game.giveUp();
+
+                document.getElementById('submit-word').setAttribute('disabled', 'disabled');
+                document.getElementById('give-up').setAttribute('disabled', 'disabled');
+                document.getElementById('new-game').removeAttribute('disabled');
+
+                timer.stop();
             }
 
-            window.onload = load;
+            function start() {
+                game.start();                
+
+                timer.start(function(remaining) { 
+                    document.getElementById('gametime').innerText = remaining + 's remaining'; 
+                }, function() { 
+                    giveUp();
+                });
+
+                document.getElementById('submit-word').removeAttribute('disabled');
+                document.getElementById('give-up').removeAttribute('disabled');
+                document.getElementById('new-game').setAttribute('disabled', 'disabled');
+            }
+
+           window.onload = load;
         </script>
     </head>
     <body>
@@ -49,8 +75,10 @@
         <div id="game">
 
         </div>
-        <button type="button" onclick="submitWord()">Submit Word</button>
-        <button type="button" onclick="giveUp()">Give Up!</button>
+        <button type="button" onclick="submitWord()" id="submit-word" disabled="disabled">Submit Word</button>
+        <button type="button" onclick="giveUp()" id="give-up" disabled="disabled">Give Up!</button>
+        <button type="button" onclick="start()" id="new-game">New Tiles Please!</button>
+        <div id="gametime"></div>
         <h2>Found Words</h2>
         <div id="wordlist">
 

@@ -9,27 +9,35 @@ var Game = function( ) {
     this._selectedPanel = null;
 };
 
-Game.prototype.start = function(tiles, gamepanel, wordlist) {
+Game.prototype.prepare = function(tiles, gamepanel, wordlist) {
+    var self = this;
     this._tilesPanel = tiles;
     this._resultsPanel = wordlist;
     this._selectedPanel = gamepanel;
 
-    this._wordBank.load('data/wordlist.txt').then(() => {
-        var vowelCount = Game.randomInt(1,3);
-        var remainder = 6 - vowelCount;
-        var consonantCount = Game.randomInt(remainder, remainder);
-
-        var vowels = this.getCharacters(vowelCount, this._vowels);
-        var consonants = this.getCharacters(consonantCount, this._consonants);
-
-        this._tileSet = vowels.concat(consonants);
-        this._wordSet = this._wordBank.getAvailableWords(this._tileSet );
-
-        for(var index in this._tileSet ) {
-            this._tilesPanel.appendChild(this.getCharacterAsTile(this._tileSet[index], this.selectCharacter.bind(this)));
-        }
+    this._wordBank.load('data/wordlist.txt').then(() => {        
     });
-};       
+};  
+
+Game.prototype.start = function() { 
+    Game.clearElement(this._resultsPanel);
+    Game.clearElement(this._tilesPanel);
+    Game.clearElement(this._selectedPanel);
+
+    var vowelCount = Game.randomInt(1,3);
+    var remainder = 6 - vowelCount;
+    var consonantCount = Game.randomInt(remainder, remainder);
+
+    var vowels = this.getCharacters(vowelCount, this._vowels);
+    var consonants = this.getCharacters(consonantCount, this._consonants);
+
+    this._tileSet = vowels.concat(consonants);
+    this._wordSet = this._wordBank.getAvailableWords(this._tileSet );
+
+    for(var index in this._tileSet ) {
+        this._tilesPanel.appendChild(this.getCharacterAsTile(this._tileSet[index], this.selectCharacter.bind(this)));
+    }
+}
 
 Game.prototype.selectCharacter = function(element) { 
     if( element.getAttribute('data-panel') === undefined || 
@@ -118,3 +126,9 @@ Game.randomInt = (min, max) => {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
 };
+
+Game.clearElement = (element) => {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}

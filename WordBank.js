@@ -4,6 +4,13 @@ WordBank.prototype.load = function(filepath) {
     var self = this;
     
     return new Promise((resolve, reject) => {
+        if( localStorage.getItem('word-data')) { 
+            self._data = JSON.parse(localStorage.getItem('word-data'));
+            resolve(true);
+
+            return;
+        }
+
         var client = new XMLHttpRequest();
 
         client.open('GET', filepath);
@@ -26,8 +33,10 @@ WordBank.prototype.load = function(filepath) {
                             continue;
                         }
 
-                        self._data.push(word.toUpperCase());
+                        self._data.push(word.toUpperCase());                    
                     }
+
+                    localStorage.setItem('word-data', JSON.stringify(self._data));
 
                     resolve(true);
                 }
