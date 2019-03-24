@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WordSquish</title>
+        <style>
+            body { 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;                
+                background-color: #d1d1d1;
+            }
+
+            .tile { 
+                background-image: url('images/tile_sm.png');
+                width: 64px;
+                height: 68px;
+                font-size: 3.6em;
+                text-align: center;       
+                line-height: 1em;          
+                margin: 2px;
+                display: inline-block;                   
+            }
+        </style>
+        <script type="text/javascript" src="WordBank.js"></script>
+        <script type="text/javascript" src="Game.js"></script>
+        <script type="text/javascript">           
+            function load() { 
+                var game = new Game();
+
+                game.start(document.getElementById('tileset'));
+            };
+
+            window.onload = load;
+        </script>
+    </head>
+    <body>
+        <div id="tileset">
+
+        </div>
+    </body>
+</html>
