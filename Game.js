@@ -2,11 +2,19 @@ var Game = function( ) {
     this._vowels = "AEIOU";
     this._consonants = "BCDFGHJKLMNPQRSTVWXYZ";
     this._wordBank = new WordBank();
+    this._tileSet = [];
+    this._wordSet = [];
+    this._resultsPanel = null;
+    this._tilesPanel = null;
+    this._selectedPanel = null;
 };
 
-Game.prototype.start = function(container) {
+Game.prototype.start = function(tiles, gamepanel, wordlist) {
+    this._tilesPanel = tiles;
+    this._resultsPanel = wordlist;
+    this._selectedPanel = gamepanel;
+
     this._wordBank.load('data/wordlist.txt').then(() => {
-        var letters = [];              
         var vowelCount = Game.randomInt(1,3);
         var remainder = 6 - vowelCount;
         var consonantCount = Game.randomInt(remainder, remainder);
@@ -14,13 +22,27 @@ Game.prototype.start = function(container) {
         var vowels = this.getCharacters(vowelCount, this._vowels);
         var consonants = this.getCharacters(consonantCount, this._consonants);
 
-        var characters = vowels.concat(consonants);
+        this._tileSet = vowels.concat(consonants);
+        this._wordSet = this._wordBank.getAvailableWords(this._tileSet );
 
-        for(var index in characters) {
-            container.appendChild(this.getCharacterAsTile(characters[index]));
+        for(var index in this._tileSet ) {
+            this._tilesPanel.appendChild(this.getCharacterAsTile(this._tileSet[index], this.selectCharacter.bind(this)));
         }
     });
-};            
+};       
+
+Game.prototype.selectCharacter = function(element) { 
+    if( element.getAttribute('data-panel') === undefined || 
+        element.getAttribute('data-panel') === 'selected') {
+            element.setAttribute('data-panel', 'available');
+            this._tilesPanel.appendChild(element);
+    } else 
+    {
+        element.setAttribute('data-panel', 'selected');
+
+        this._selectedPanel.appendChild(element);
+    }
+};
 
 Game.prototype.getCharacters = function(numberOfCharacters, set) { 
     var result = [];
@@ -29,6 +51,17 @@ Game.prototype.getCharacters = function(numberOfCharacters, set) {
         var characterIndex = Game.randomInt(0, set.length - 1);
 
         result.push(set[characterIndex]);
+    }
+
+    return result;
+};
+
+Game.prototype.getWordAsTileset = function(word, hidden) { 
+    var result = document.createElement('div');
+    result.setAttribute('class', hidden ? 'result' : '');
+
+    for(var i in word) { 
+        result.appendChild(this.getCharacterAsTile(word[i]));
     }
 
     return result;
@@ -48,6 +81,36 @@ Game.prototype.getCharacterAsTile = function ( letter, onclick ) {
     tile.innerHTML = letter;
 
     return tile;
+};
+
+Game.prototype.submitSelected = function() { 
+    var selectedTiles = Array.from(this._selectedPanel.getElementsByClassName('tile'));
+
+    var selectedWord = selectedTiles.map((tile) => { 
+        return tile.getAttribute('data');
+    }).join('');
+
+    var wordFound = this._wordSet.indexOf(selectedWord);
+
+    if( wordFound >= 0 ) { 
+        this._resultsPanel.appendChild(this.getWordAsTileset(selectedWord));
+
+        this._wordSet.splice(wordFound,1);
+    }
+
+    for(var tile in selectedTiles) { 
+        var element = selectedTiles[tile];
+
+        element.setAttribute('data-panel', 'available');
+        
+        this._tilesPanel.appendChild(element);
+    }
+};
+
+Game.prototype.giveUp = function() { 
+    for(var index in this._wordSet) { 
+        this._resultsPanel.appendChild(this.getWordAsTileset(this._wordSet[index]));
+    }
 };
 
 Game.randomInt = (min, max) => { 

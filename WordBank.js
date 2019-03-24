@@ -26,7 +26,7 @@ WordBank.prototype.load = function(filepath) {
                             continue;
                         }
 
-                        self._data.push(word);
+                        self._data.push(word.toUpperCase());
                     }
 
                     resolve(true);
@@ -38,8 +38,35 @@ WordBank.prototype.load = function(filepath) {
     });
 };
 
-WordBank.prototype.pickRandomWord = function() { 
-    var index = Math.floor(Math.random() * Math.floor(this._data.length));
+WordBank.prototype.getAvailableWords = function(characters) { 
+    var results = [];
 
-    return this._data[index];
+    for(var index in this._data) 
+    { 
+        var x = characters.slice();
+        var word = this._data[index];
+        var wordIsAvailable = true;
+
+        for(var c in word) 
+        { 
+            var letter = x.indexOf(word[c]);
+
+            if( letter == -1 ) { 
+                wordIsAvailable = false;
+                break;
+            }
+
+            x.splice(letter,1);
+        }
+
+        if( wordIsAvailable) { 
+            results.push(word);
+        }
+    }
+
+    results = results.sort((a,b) => { 
+        return a.length - b.length || a > b;
+    });
+
+    return results;
 };

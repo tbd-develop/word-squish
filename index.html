@@ -22,17 +22,37 @@
         <script type="text/javascript" src="WordBank.js"></script>
         <script type="text/javascript" src="Game.js"></script>
         <script type="text/javascript">           
-            function load() { 
-                var game = new Game();
+            var game = new Game();
 
-                game.start(document.getElementById('tileset'));
+            function load() { 
+                game.start(document.getElementById('tileset'), document.getElementById('game'), document.getElementById('wordlist'));
             };
+
+            function submitWord() { 
+                game.submitSelected();
+            }
+
+            function giveUp() { 
+                game.giveUp();
+            }
 
             window.onload = load;
         </script>
     </head>
     <body>
+        <h1>Tiles</h1>
+        <h4>Available</h4>
         <div id="tileset">
+
+        </div>
+        <h4>Selected</h4>
+        <div id="game">
+
+        </div>
+        <button type="button" onclick="submitWord()">Submit Word</button>
+        <button type="button" onclick="giveUp()">Give Up!</button>
+        <h2>Found Words</h2>
+        <div id="wordlist">
 
         </div>
     </body>
