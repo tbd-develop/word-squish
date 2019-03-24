@@ -10,7 +10,7 @@ body {
 .tile { 
     background-image: url('images/tile_sm.png');
     width: 64px;
-    height: 68px;
+    height: 66px;
     font-size: 3.6em;
     text-align: center;       
     line-height: 1em;          

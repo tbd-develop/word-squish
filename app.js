@@ -1,4 +1,4 @@
-var game = new Game();
+var game = new Game('data/common_words.txt');
 var timer = new Timer(120);
 
 function load() { 

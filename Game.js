@@ -1,4 +1,4 @@
-var Game = function( ) { 
+var Game = function( filepath) { 
     this._vowels = "AEIOU";
     this._consonants = "BCDFGHJKLMNPQRSTVWXYZ";
     this._wordBank = new WordBank();
@@ -10,6 +10,7 @@ var Game = function( ) {
     this._currentScore = 0;
     this._onScore = null;
     this._onComplete = null;
+    this._file = filepath;
 };
 
 Game.prototype.prepare = function(tiles, gamepanel, wordlist) {
@@ -17,7 +18,7 @@ Game.prototype.prepare = function(tiles, gamepanel, wordlist) {
     this._resultsPanel = wordlist;
     this._selectedPanel = gamepanel;
 
-    return this._wordBank.load('data/wordlist.txt');
+    return this._wordBank.load(this._file);
 }; 
 
 Game.prototype.onScoreUpdated = function(callback) { 
