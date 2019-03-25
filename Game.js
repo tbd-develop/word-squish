@@ -34,7 +34,7 @@ Game.prototype.start = function() {
     Game.clearElement(this._tilesPanel);
     Game.clearElement(this._selectedPanel);
 
-    var vowelCount = Game.randomInt(1,3);
+    var vowelCount = Game.randomInt(2,3);
     var remainder = 6 - vowelCount;
     var consonantCount = Game.randomInt(remainder, remainder);
 
@@ -125,6 +125,7 @@ Game.prototype.submitSelected = function() {
 
     if( this._wordSet.length == 0) { 
         this.score(30);
+        
         this.giveUp();
     }
 
@@ -139,10 +140,14 @@ Game.prototype.submitSelected = function() {
 
 Game.prototype.giveUp = function() { 
     for(var index in this._wordSet) { 
-        this._resultsPanel.appendChild(this.getWordAsTileset(this._wordSet[index]));
+        var wordLine = this.getWordAsTileset(this._wordSet[index]);
+
+        wordLine.setAttribute('class', 'completed-word');
+
+        this._resultsPanel.appendChild(wordLine);
     }
 
-    this._onComplete();
+    this._onComplete(this._currentScore);
 };
 
 Game.prototype.score = function(value) { 

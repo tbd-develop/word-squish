@@ -1,5 +1,6 @@
 var game = new Game('data/common_words.txt');
 var timer = new Timer(120);
+var scoreboard = new ScoreBoard();
 
 function load() { 
     game.prepare(
@@ -14,7 +15,7 @@ function load() {
             complete();
         });
     });
-};
+}
 
 function submitWord() { 
     game.submitSelected();
@@ -24,12 +25,16 @@ function giveUp() {
     game.giveUp();
 }
 
-function complete() { 
+function complete(score) { 
     document.getElementById('submit-word').setAttribute('disabled', 'disabled');
     document.getElementById('give-up').setAttribute('disabled', 'disabled');
     document.getElementById('new-game').removeAttribute('disabled');
 
     timer.stop();
+
+    if( scoreboard.checkScore(score)) { 
+        scoreboard.addScore('Player', score);
+    }
 }
 
 function start() {
@@ -44,6 +49,15 @@ function start() {
     document.getElementById('submit-word').removeAttribute('disabled');
     document.getElementById('give-up').removeAttribute('disabled');
     document.getElementById('new-game').setAttribute('disabled', 'disabled');
+}
+
+function openHighScore() { 
+    var scores = scoreboard.getScoreCard();
+
+    for(var score in scores) { 
+
+    }
+    $("#highscore").modal('show');
 }
 
 window.onload = load;
